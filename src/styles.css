@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+.button {
+	display: inline-block;
+    margin: 2px;
+    border: 0;
+    border-radius: 0.317rem;
+    background-color: #aaa;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-webkit-font-smoothing: antialiased;
+}

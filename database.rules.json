@@ -1,6 +1,10 @@
 {
   "rules": {
-    ".read": false,
-    ".write": false
-  }
+    "pictures": {
+       "$uid": {
+         ".read": "$uid === auth.uid",
+         ".write": "$uid === auth.uid"
+       }
+     }
+   }
 }

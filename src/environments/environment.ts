@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyC3xeW97o1VsY9PzbnDdbCTpQG6CtfGoyc",
+    authDomain: "cougar-clock.firebaseapp.com",
+    databaseURL: "https://cougar-clock.firebaseio.com",
+    projectId: "cougar-clock",
+    storageBucket: "cougar-clock.appspot.com",
+    messagingSenderId: "571800521251"
+  }
 };
 
 /*
