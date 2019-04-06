@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,17 +10,20 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 import { AuthComponent } from './auth/auth.component';
 import { ClockComponent } from './clock/clock.component';
+import { ConfigureComponent } from './configure/configure.component';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    ClockComponent
+    ClockComponent,
+    ConfigureComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +32,10 @@ import { ClockComponent } from './clock/clock.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [AngularFireDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

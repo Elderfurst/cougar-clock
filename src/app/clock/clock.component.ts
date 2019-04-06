@@ -31,8 +31,4 @@ export class ClockComponent implements OnInit {
     this.afAuth.auth.signOut();
     this.router.navigateByUrl('/');
   }
-
-  configure() {
-
-  }
 }
