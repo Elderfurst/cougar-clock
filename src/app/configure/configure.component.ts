@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
-import { ConfigureService } from './configure.service';
 import { AngularFireList } from '@angular/fire/database';
 import { Entry } from '../entry';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-configure',
@@ -16,17 +16,19 @@ export class ConfigureComponent implements OnInit {
   newName: String;
   newTime: NgbTimeStruct = {hour: 13, minute: 30, second: 30};
   newFile: any[];
-  entries: AngularFireList<Entry>;
+  entries: any[];
 
-  constructor(private modalService: NgbModal, private configureService: ConfigureService, private afAuth: AngularFireAuth) { }
+  constructor(private modalService: NgbModal, 
+    private afAuth: AngularFireAuth,
+    private database: AngularFirestore) { }
 
   ngOnInit() {
     this.afAuth.authState.subscribe(user => {
       this.user = user;
-      this.configureService.getEntries(`${user.uid}`).snapshotChanges().subscribe(result => {
-        console.log(result);
+      let userDoc = this.database.doc<any>(`/users/${this.user.uid}`);
+      let pictures = userDoc.collection<any>('pictures').valueChanges().subscribe(result => {
+        this.entries = result;
       });
-      console.log(this.entries);
     });
   }
 
