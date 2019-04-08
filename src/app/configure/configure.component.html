@@ -9,15 +9,18 @@
           <th scope="col">Name</th>
           <th scope="col">File Name</th>
           <th scope="col">Interrupt Time</th>
-          <th scope="col">Delete</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let entry of entries">
+        <tr *ngFor="let entry of pictures | async">
           <td>{{ entry.name }}</td>
           <td>{{ entry.fileName }}</td>
-          <td>{{ entry.time }}</td>
-          <td><button type="button" class="btn btn-outline-dark" (click)="delete(entry)">Delete</button></td>
+          <td>{{ entry.time | date:'hh:mm:ss' }}</td>
+          <td>
+            <button type="button" class="btn btn-outline-dark mr-3" (click)="delete(entry)">Delete</button>
+            <button type="button" class="btn btn-outline-dark" (click)="configure(entry)">Configure</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -40,7 +43,7 @@
         </div>
         <div class="form-group">
           <label for="appearanceTime">What time should the photo appear?</label>
-          <ngb-timepicker [(ngModel)]="newTime" [seconds]="true" name="newTime"></ngb-timepicker>
+          <ngb-timepicker [(ngModel)]="newTime" [seconds]="true" [meridian]="true" name="newTime"></ngb-timepicker>
         </div>
         <div class="form-group">
           <label for="picture">Upload a picture</label>
