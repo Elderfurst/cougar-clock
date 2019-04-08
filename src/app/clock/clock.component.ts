@@ -16,7 +16,7 @@ export class ClockComponent implements OnInit {
   user: any;
   pictures: Observable<any[]>;
   pictureData: { time: number, url: string }[] = [];
-  show: boolean[];
+  show: boolean[] = [];
 
   constructor(public afAuth: AngularFireAuth, 
     public router: Router,
