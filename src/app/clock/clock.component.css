@@ -5,3 +5,16 @@
 .center {
     text-align: center;
 }
+
+.picture-container {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    height: 100%;
+}
+
+.picture {
+    max-width: 100%;
+    max-height: 100vh;
+    margin: auto;
+}

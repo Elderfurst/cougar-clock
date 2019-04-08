@@ -3,6 +3,6 @@
   <button class="btn btn-primary mr-3" (click)="logout()">Logout</button>
   <button class="btn btn-primary" routerLink="/configure">Configure</button>
 </div>
-<div class="center picture" *ngFor="let picture of pictureData; let i = index">
-  <img [src]="picture.url" *ngIf="show[i]" />
+<div class="center picture-container" *ngFor="let picture of pictureData; let i = index">
+  <img [src]="picture.url" class="picture" *ngIf="show[i]" />
 </div>
