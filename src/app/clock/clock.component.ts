@@ -54,16 +54,8 @@ export class ClockComponent implements OnInit {
             } else {
               this.show[i] = false;
             }
-
-            this.show.forEach(entry => {
-              if (entry) {
-                this.showClock = false;
-                return;
-              } else {
-                this.showClock = true;
-              }
-            });
           }
+          this.showClock = this.show.every(entry => entry === false);
         });
       }
     });
