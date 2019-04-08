@@ -93,6 +93,8 @@ export class ConfigureComponent implements OnInit {
     const file = this.updatedFile;
 
     if (file) {
+      const oldFilePath = this.updatedFilePath;
+      this.storage.ref(oldFilePath).delete();
       this.updatedFilePath = `pictures/${this.user.uid}/${this.updatedFile.name}`;
       this.updatedFileName = this.updatedFile.name;
       const task = this.storage.upload(this.updatedFilePath, file);
@@ -132,6 +134,7 @@ export class ConfigureComponent implements OnInit {
   }
 
   delete(entry) {
+    this.storage.ref(`pictures/${this.user.uid}/${entry.fileName}`).delete();
     this.pictureCollection.doc(`${entry.id}`).delete();
   }
 }
