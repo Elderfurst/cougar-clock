@@ -15,9 +15,16 @@ export class ConfigureComponent implements OnInit {
 
   user: any;
   newName: String;
-  newTime: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+  newTime: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   newFile: any;
-  newFilePath: String;
+  newFilePath: string;
+  newFileName: string;
+  updatedEntryId: number;
+  updatedName: String;
+  updatedTime: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  updatedFile: any;
+  updatedFilePath: string;
+  updatedFileName: string;
   userDoc: AngularFirestoreDocument<any>;
   pictureCollection: AngularFirestoreCollection<any>;
   pictures: Observable<any[]>;
@@ -47,7 +54,7 @@ export class ConfigureComponent implements OnInit {
   }
 
   
-  open(content: any) {
+  open(content) {
     this.modalService.open(content);
   }
 
@@ -58,17 +65,47 @@ export class ConfigureComponent implements OnInit {
     date.setSeconds(this.newTime.second);
 
     const file = this.newFile;
-    const filePath = `pictures/${this.user.uid}/${this.newFile.name}`;
-    const task = this.storage.upload(filePath, file);
+    this.newFilePath = `pictures/${this.user.uid}/${this.newFile.name}`;
+    this.newFileName = this.newFile.name;
+    const task = this.storage.upload(this.newFilePath, file);
 
     const newPicture = {
       name: this.newName,
-      fileName: this.newFile.name,
-      filePath: filePath,
+      fileName: this.newFileName,
+      filePath: this.newFilePath,
       time: date.getTime()
     };
 
     this.pictureCollection.add(newPicture);
+    this.modalService.dismissAll();
+    this.newName = '';
+    this.newFile = '';
+    this.newFilePath = '';
+    this.newFileName = '';
+  }
+
+  update() {
+    let date = new Date();
+    date.setHours(this.updatedTime.hour);
+    date.setMinutes(this.updatedTime.minute);
+    date.setSeconds(this.updatedTime.second);
+
+    const file = this.updatedFile;
+
+    if (file) {
+      this.updatedFilePath = `pictures/${this.user.uid}/${this.updatedFile.name}`;
+      this.updatedFileName = this.updatedFile.name;
+      const task = this.storage.upload(this.updatedFilePath, file);
+    }
+
+    const updatedPicture = {
+      name: this.updatedName,
+      fileName: this.updatedFileName,
+      filePath: this.updatedFilePath,
+      time: date.getTime()
+    };
+
+    this.pictureCollection.doc(`${this.updatedEntryId}`).update(updatedPicture);
     this.modalService.dismissAll();
   }
 
@@ -76,8 +113,22 @@ export class ConfigureComponent implements OnInit {
     this.newFile = event.target.files[0];
   }
 
-  configure(entry) {
+  updatedFileChange(event) {
+    this.updatedFile = event.target.files[0];
+  }
 
+  updateOpen(entry, configure) {
+    this.updatedEntryId = entry.id;
+    this.updatedName = entry.name;
+    this.updatedFilePath = entry.filePath;
+    this.updatedFileName = entry.fileName;
+    const date = new Date(entry.time);
+    this.updatedTime = {
+      hour: date.getHours(),
+      minute: date.getMinutes(),
+      second: date.getSeconds()
+    };
+    this.modalService.open(configure);
   }
 
   delete(entry) {

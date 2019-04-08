@@ -19,7 +19,7 @@
           <td>{{ entry.time | date:'hh:mm:ss' }}</td>
           <td>
             <button type="button" class="btn btn-outline-dark mr-3" (click)="delete(entry)">Delete</button>
-            <button type="button" class="btn btn-outline-dark" (click)="configure(entry)">Configure</button>
+            <button type="button" class="btn btn-outline-dark" (click)="updateOpen(entry, configure)">Configure</button>
           </td>
         </tr>
       </tbody>
@@ -30,7 +30,7 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add New Photo</h4>
+      <h4 class="modal-title" id="modal-basic-title">Add New Entry</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -42,8 +42,8 @@
           <input id="name" class="form-control" type="text" [(ngModel)]="newName" name="newName">
         </div>
         <div class="form-group">
-          <label for="appearanceTime">What time should the photo appear?</label>
-          <ngb-timepicker [(ngModel)]="newTime" [seconds]="true" [meridian]="true" name="newTime"></ngb-timepicker>
+          <label for="newTime">What time should the photo appear?</label>
+          <ngb-timepicker id="newTime" [(ngModel)]="newTime" [seconds]="true" [meridian]="true" name="newTime"></ngb-timepicker>
         </div>
         <div class="form-group">
           <label for="picture">Upload a picture</label>
@@ -55,3 +55,31 @@
       <button type="button" class="btn btn-outline-dark" (click)="save()">Save</button>
     </div>
   </ng-template>
+
+  <ng-template #configure let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Configure Entry</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="updatedName">Name</label>
+            <input id="updatedName" class="form-control" type="text" [(ngModel)]="updatedName" name="updatedName">
+          </div>
+          <div class="form-group">
+            <label for="updatedTime">What time should the photo appear?</label>
+            <ngb-timepicker [(ngModel)]="updatedTime" [seconds]="true" [meridian]="true" name="updatedTime"></ngb-timepicker>
+          </div>
+          <div class="form-group">
+            <label for="updatedPicture">Upload a new picture</label>
+            <input id="updatedPicture" class="form-control" type="file" (change)="updatedFileChange($event)">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="update()">Update</button>
+      </div>
+    </ng-template>
