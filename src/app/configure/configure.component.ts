@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-configure',
@@ -23,7 +24,8 @@ export class ConfigureComponent implements OnInit {
 
   constructor(private modalService: NgbModal, 
     private afAuth: AngularFireAuth,
-    private database: AngularFirestore) { }
+    private database: AngularFirestore,
+    private storage: AngularFireStorage) { }
 
   ngOnInit() {
     let now = new Date();
@@ -54,14 +56,18 @@ export class ConfigureComponent implements OnInit {
     date.setHours(this.newTime.hour);
     date.setMinutes(this.newTime.minute);
     date.setSeconds(this.newTime.second);
+
+    const file = this.newFile;
+    const filePath = `pictures/${this.user.uid}/${this.newFile.name}`;
+    const task = this.storage.upload(filePath, file);
+
     const newPicture = {
       name: this.newName,
       fileName: this.newFile.name,
-      filePath: '',
+      filePath: filePath,
       time: date.getTime()
     };
 
-    console.log(newPicture);
     this.pictureCollection.add(newPicture);
     this.modalService.dismissAll();
   }
