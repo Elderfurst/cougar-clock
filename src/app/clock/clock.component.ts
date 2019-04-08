@@ -17,6 +17,7 @@ export class ClockComponent implements OnInit {
   pictures: Observable<any[]>;
   pictureData: { time: number, url: string }[] = [];
   show: boolean[] = [];
+  showClock: boolean = true;
 
   constructor(public afAuth: AngularFireAuth, 
     public router: Router,
@@ -46,6 +47,23 @@ export class ClockComponent implements OnInit {
         const source = interval(1000);
         source.subscribe(() => {
           this.clock = Date.now();
+
+          for (var i = 0; i < this.pictureData.length; i++) {
+            if (this.clock >= this.pictureData[i].time && this.clock <= this.pictureData[i].time + 15000) {
+              this.show[i] = true;
+            } else {
+              this.show[i] = false;
+            }
+
+            this.show.forEach(entry => {
+              if (entry) {
+                this.showClock = false;
+                return;
+              } else {
+                this.showClock = true;
+              }
+            });
+          }
         });
       }
     });
