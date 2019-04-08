@@ -52,7 +52,6 @@ export class ConfigureComponent implements OnInit {
       }));
     });
   }
-
   
   open(content) {
     this.modalService.open(content);
