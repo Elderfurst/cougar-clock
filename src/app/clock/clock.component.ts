@@ -18,6 +18,8 @@ export class ClockComponent implements OnInit {
   pictureData: { time: number, url: string }[] = [];
   show: boolean[] = [];
   showClock: boolean = true;
+  audio: HTMLAudioElement;
+  audioId: number;
 
   constructor(public afAuth: AngularFireAuth, 
     public router: Router,
@@ -29,6 +31,9 @@ export class ClockComponent implements OnInit {
       if (!user) {
         this.router.navigateByUrl('/');
       } else {
+        this.audio = new Audio();
+        this.audio.src = "../../assets/fire-truck.mp3";
+        this.audio.load();
         this.user = user;
         this.pictures = this.database.doc<any>(`/users/${this.user.uid}`).collection<any>('pictures').valueChanges();
         this.pictures.subscribe(results => {
@@ -51,11 +56,15 @@ export class ClockComponent implements OnInit {
           for (var i = 0; i < this.pictureData.length; i++) {
             if (this.clock >= this.pictureData[i].time && this.clock <= this.pictureData[i].time + 15000) {
               this.show[i] = true;
+              this.playSound(i);
             } else {
               this.show[i] = false;
             }
           }
           this.showClock = this.show.every(entry => entry === false);
+          if (this.showClock) {
+            this.audioId = -1;
+          }
         });
       }
     });
@@ -64,5 +73,12 @@ export class ClockComponent implements OnInit {
   logout() {
     this.afAuth.auth.signOut();
     this.router.navigateByUrl('/');
+  }
+
+  playSound(id: number) {
+    if ((this.audio.paused || this.audio.currentTime === 0) && this.audioId !== id) {
+      this.audio.play();
+      this.audioId = id;
+    }
   }
 }
