@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { interval, Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-clock',
@@ -54,17 +55,16 @@ export class ClockComponent implements OnInit {
           this.clock = Date.now();
 
           for (var i = 0; i < this.pictureData.length; i++) {
-            if (this.clock >= this.pictureData[i].time && this.clock <= this.pictureData[i].time + 15000) {
+            if (this.secondsOfDay(moment(this.clock)) >= this.secondsOfDay(moment(this.pictureData[i].time)) 
+            && this.secondsOfDay(moment(this.clock)) <= this.secondsOfDay(moment(this.pictureData[i].time + 15000))) {
               this.show[i] = true;
               this.playSound(i);
             } else {
               this.show[i] = false;
+              this.audioId = -1;
             }
           }
           this.showClock = this.show.every(entry => entry === false);
-          if (this.showClock) {
-            this.audioId = -1;
-          }
         });
       }
     });
@@ -80,5 +80,9 @@ export class ClockComponent implements OnInit {
       this.audio.play();
       this.audioId = id;
     }
+  }
+
+  secondsOfDay(moment: moment.Moment) {
+    return moment.seconds() + (moment.minutes() * 60) + (moment.hours() * 3600);
   }
 }
