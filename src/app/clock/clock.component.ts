@@ -38,6 +38,8 @@ export class ClockComponent implements OnInit {
         this.user = user;
         this.pictures = this.database.doc<any>(`/users/${this.user.uid}`).collection<any>('pictures').valueChanges();
         this.pictures.subscribe(results => {
+          this.pictureData = [];
+          this.show = [];
           results.forEach(result => {
             this.storage.ref(result.filePath).getDownloadURL().subscribe(url => {
               const data = {
